@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import TextField from "../../common/TextField";
 import { useState } from "react";
+import { signInFirebaseApi } from "../../../utils/auth/firebase-auth";
 
 const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void }) => {
 
@@ -24,17 +25,14 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
         validationSchema: validateSignIn,
         onSubmit: (values, { resetForm }) => {
             console.log(values);
-            if(
-                signInForm.values.email === 'test@test.com'
-                && signInForm.values.password === 'Test@1234'
-            ) {
+            signInFirebaseApi(values.email, values.password).then((res) => {
+                console.log(res);
                 setErrorText("");
                 navigate('/browse');
-            }
-            else {
-                console.log("Incorrect email or password!");
-                setErrorText("Incorrect email or password!")
-            }
+            }).catch((err) => {
+                console.log(err);
+                setErrorText(err);
+            })
         },
         validateOnMount: true,
         validate: (values) => {

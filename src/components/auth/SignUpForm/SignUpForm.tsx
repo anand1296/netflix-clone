@@ -2,6 +2,7 @@ import { FormikHelpers, useFormik } from "formik";
 import * as Yup from "yup"
 import TextField from "../../common/TextField";
 import { useState } from "react";
+import { signUpFirebaseApi } from "../../../utils/auth/firebase-auth";
 
 interface Values {
     name: string;
@@ -14,6 +15,7 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
 
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
+    const [errorText, setErrorText] = useState("");
 
     const validateSignUp = Yup.object().shape({
         name: Yup.string().required("Name is required!"),
@@ -44,7 +46,14 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
         validationSchema: validateSignUp,
         onSubmit: (values: Values, { resetForm }: FormikHelpers<Values>) => {
             console.log(signUpForm.isValid, values);
-            toggleFormType('signin');
+            signUpFirebaseApi(values.email, values.password).then((res) => {
+                console.log(res);
+                setErrorText("");
+                toggleFormType('signin');
+            }).catch((err) => {
+                console.log(err);
+                setErrorText(err);
+            })
         },
         validateOnMount: true,
         validate: (values) => {
@@ -109,6 +118,9 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
             <button type="reset" className={`p-2 w-full text-center text-gray-500 border border-gray-500 font-medium rounded transition-all duration-300 ease-in-out hover:bg-white hover:text-gray-500 hover:border-white cursor-pointer`}>
                 Reset
             </button>
+            { Boolean(errorText.length) && <div className="text-red-500 text-sm text-end before:content-['⚠'] before:pr-1">
+                    {errorText}
+                </div> }
             <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={(e) => {e.preventDefault();toggleFormType('signin')}}>
                 Already Registered?{" "}
                 <span className="text-white font-semibold cursor-pointer hover:underline">
