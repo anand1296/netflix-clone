@@ -8,6 +8,7 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
 
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [errorText, setErrorText] = useState("");
 
     const validateSignIn = Yup.object().shape({
         email: Yup.string().required("Email is required!").email("Invalid email address!"),
@@ -27,10 +28,12 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                 signInForm.values.email === 'test@test.com'
                 && signInForm.values.password === 'Test@1234'
             ) {
+                setErrorText("");
                 navigate('/browse');
             }
             else {
-                console.log('Invalid email or password!');
+                console.log("Incorrect email or password!");
+                setErrorText("Incorrect email or password!")
             }
         },
         validateOnMount: true,
@@ -74,7 +77,10 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
             >
                 Sign In
             </button>
-            <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={() => toggleFormType("signup")}>
+            { Boolean(errorText.length) && <div className="text-red-500 text-sm text-end before:content-['⚠'] before:pr-1">
+                    {errorText}
+                </div> }
+            <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={(e) => {e.preventDefault();toggleFormType("signup")}}>
                 New to Netflix?{" "}
                 <span className="text-white font-semibold cursor-pointer hover:underline">Sign up now</span>.
             </p>

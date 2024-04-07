@@ -19,6 +19,11 @@ input:focus, input:focus-visible {
     outline: none;
 }
 
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
 @layer base {
     h1 {
       @apply text-3xl font-bold;

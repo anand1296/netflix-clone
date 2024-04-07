@@ -109,7 +109,7 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
             <button type="reset" className={`p-2 w-full text-center text-gray-500 border border-gray-500 font-medium rounded transition-all duration-300 ease-in-out hover:bg-white hover:text-gray-500 hover:border-white cursor-pointer`}>
                 Reset
             </button>
-            <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={() => toggleFormType('signin')}>
+            <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={(e) => {e.preventDefault();toggleFormType('signin')}}>
                 Already Registered?{" "}
                 <span className="text-white font-semibold cursor-pointer hover:underline">
                     Sign in now
