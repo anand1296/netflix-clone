@@ -18,7 +18,7 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="login-form-container text-white relative z-[1] py-12 px-16 bg-[#030603]/80 rounded max-w-md mx-auto">
+      <div className="login-form-container text-white relative z-[1] py-12 px-16 bg-[#030603]/80 rounded max-w-md mx-auto mb-4">
         <header>
           <h1 className="mb-7">{ isSignUp ? 'Sign Up' : 'Sign In'}</h1>
         </header>

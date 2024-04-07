@@ -1,8 +1,7 @@
 import { FormikHelpers, useFormik } from "formik";
-import React from "react";
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup"
 import TextField from "../../common/TextField";
+import { useState } from "react";
 
 interface Values {
     name: string;
@@ -12,6 +11,9 @@ interface Values {
 }
 
 const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void}) => {
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showRePassword, setShowRePassword] = useState(false);
 
     const validateSignUp = Yup.object().shape({
         name: Yup.string().required("Name is required!"),
@@ -59,7 +61,7 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
                 autoFocus
                 value={signUpForm.values.name}
                 onChange={(e) => {signUpForm.handleBlur(e);signUpForm.handleChange(e)}}
-                styles="p-4 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
+                styles="px-4 py-2 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signUpForm.touched.name && Boolean(signUpForm.errors.name?.length)}
                 errorText={signUpForm.touched.name && Boolean(signUpForm.errors.name?.length) ? signUpForm.errors.name : undefined}
             />
@@ -69,7 +71,7 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
                 name="email"
                 value={signUpForm.values.email}
                 onChange={(e) => {signUpForm.handleBlur(e);signUpForm.handleChange(e)}}
-                styles="p-4 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
+                styles="px-4 py-2 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signUpForm.touched.email && Boolean(signUpForm.errors.email?.length)}
                 errorText={signUpForm.touched.email && Boolean(signUpForm.errors.email?.length) ? signUpForm.errors.email : undefined}
             />
@@ -80,9 +82,12 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
                 name="password"
                 value={signUpForm.values.password}
                 onChange={(e) => {signUpForm.handleBlur(e);signUpForm.handleChange(e)}}
-                styles="p-4 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
+                styles="px-4 py-2 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signUpForm.touched.password && Boolean(signUpForm.errors.password?.length)}
                 errorText={signUpForm.touched.password && Boolean(signUpForm.errors.password?.length) ? signUpForm.errors.password : undefined}
+                togglePasswordVisibility={signUpForm.values.password?.length > 0}
+                showPassword={showPassword}
+                onTogglePasswordVisibility={() => setShowPassword(!showPassword)}
             />
             <TextField
                 type="password"
@@ -91,9 +96,12 @@ const SignUpForm = ({toggleFormType} : {toggleFormType: (type: string) => void})
                 name="confirmPassword"
                 value={signUpForm.values.confirmPassword}
                 onChange={(e) => {signUpForm.handleBlur(e);signUpForm.handleChange(e)}}
-                styles="p-4 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
+                styles="px-4 py-2 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signUpForm.touched.confirmPassword && Boolean(signUpForm.errors.confirmPassword?.length)}
                 errorText={signUpForm.touched.confirmPassword && Boolean(signUpForm.errors.confirmPassword?.length) ? signUpForm.errors.confirmPassword : undefined}
+                togglePasswordVisibility={signUpForm.values.confirmPassword?.length > 0}
+                showPassword={showRePassword}
+                onTogglePasswordVisibility={() => setShowRePassword(!showRePassword)}
             />
             <button disabled={!signUpForm.isValid} type="submit" className={`p-2 w-full text-center bg-red-600 font-medium rounded transition-all duration-300 ease-in-out ${signUpForm.isValid ? 'hover:bg-red-700': '' }  disabled:opacity-70 disabled:cursor-default`}>
                 Sign Up

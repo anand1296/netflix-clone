@@ -2,10 +2,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import TextField from "../../common/TextField";
+import { useState } from "react";
 
 const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void }) => {
 
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     const validateSignIn = Yup.object().shape({
         email: Yup.string().required("Email is required!").email("Invalid email address!"),
@@ -47,7 +49,7 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                 name="email"
                 value={signInForm.values.email}
                 onChange={(e) => {signInForm.handleBlur(e);signInForm.handleChange(e)}}
-                styles="p-4 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
+                styles="p-4 bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signInForm.touched.email && Boolean(signInForm.errors.email?.length)}
                 errorText={signInForm.touched.email && Boolean(signInForm.errors.email?.length) ? signInForm.errors.email : undefined}
             />
@@ -58,9 +60,12 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                 name="password"
                 value={signInForm.values.password}
                 onChange={(e) => {signInForm.handleBlur(e);signInForm.handleChange(e)}}
-                styles="p-4 w-full bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
+                styles="p-4 bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signInForm.touched.password && Boolean(signInForm.errors.password?.length)}
                 errorText={signInForm.touched.password && Boolean(signInForm.errors.password?.length) ? signInForm.errors.password : undefined}
+                togglePasswordVisibility={signInForm.values.password?.length > 0}
+                showPassword={showPassword}
+                onTogglePasswordVisibility={() => setShowPassword(!showPassword)}
             />
             <button
                 disabled={!signInForm.isValid}
