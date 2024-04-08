@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 import TextField from "../../common/TextField";
 import { useState } from "react";
 import { signInFirebaseApi } from "../../../utils/auth/firebase-auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../utils/store/user.slice";
 
 const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void }) => {
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [errorText, setErrorText] = useState("");
@@ -28,10 +31,12 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
             signInFirebaseApi(values.email, values.password).then((res) => {
                 console.log(res);
                 setErrorText("");
+                dispatch(setUser({uid: res.uid, displayName: res.displayName, email: res.email}))
                 navigate('/browse');
             }).catch((err) => {
                 console.log(err);
-                setErrorText(err);
+                setErrorText(err.toString().split(':')[2]);
+                signInForm.setSubmitting(false);
             })
         },
         validateOnMount: true,
@@ -42,14 +47,14 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
     });
 
     return (
-        <form className="flex flex-col gap-4" onSubmit={signInForm.handleSubmit}>
+        <form className="flex flex-col gap-4" onSubmit={signInForm.handleSubmit} onFocus={signInForm.handleBlur}>
             <TextField
-                autoFocus
                 type="text"
                 placeholder="Email"
                 name="email"
+                disabled={signInForm.isSubmitting}
                 value={signInForm.values.email}
-                onChange={(e) => {signInForm.handleBlur(e);signInForm.handleChange(e)}}
+                onChange={signInForm.handleChange}
                 styles="p-4 bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signInForm.touched.email && Boolean(signInForm.errors.email?.length)}
                 errorText={signInForm.touched.email && Boolean(signInForm.errors.email?.length) ? signInForm.errors.email : undefined}
@@ -59,8 +64,9 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                 autoComplete="new-password"
                 placeholder="Password"
                 name="password"
+                disabled={signInForm.isSubmitting}
                 value={signInForm.values.password}
-                onChange={(e) => {signInForm.handleBlur(e);signInForm.handleChange(e)}}
+                onChange={signInForm.handleChange}
                 styles="p-4 bg-[rgba(22,22,22,0.7)] border border-[#808080b3] rounded"
                 isError={signInForm.touched.password && Boolean(signInForm.errors.password?.length)}
                 errorText={signInForm.touched.password && Boolean(signInForm.errors.password?.length) ? signInForm.errors.password : undefined}
@@ -69,13 +75,13 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                 onTogglePasswordVisibility={() => setShowPassword(!showPassword)}
             />
             <button
-                disabled={!signInForm.isValid}
+                disabled={!signInForm.isValid || signInForm.isSubmitting}
                 type="submit"
                 className={`p-2 w-full text-center bg-red-600 roun font-medium rounded transition-all ${signInForm.isValid ? 'hover:bg-red-700': '' }  disabled:opacity-70 disabled:cursor-default`}
             >
                 Sign In
             </button>
-            { Boolean(errorText.length) && <div className="text-red-500 text-sm text-end before:content-['⚠'] before:pr-1">
+            { Boolean(errorText.length) && <div className="text-red-500 text-sm text-start before:content-['⚠'] before:pr-1">
                     {errorText}
                 </div> }
             <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={(e) => {e.preventDefault();toggleFormType("signup")}}>

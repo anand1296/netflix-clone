@@ -7,11 +7,12 @@ const TextField = ({
     value,
     styles,
     onChange,
-    onBlur,
+    onFocus,
     autoFocus,
     autoComplete,
     isError,
     errorText,
+    disabled,
     togglePasswordVisibility,
     showPassword,
     onTogglePasswordVisibility,
@@ -20,13 +21,14 @@ const TextField = ({
     name: string;
     value: string;
     onChange: (e: ChangeEvent<any>) => void;
-    onBlur?: (e: ChangeEvent<any>) => void;
+    onFocus?: (e: ChangeEvent<any>) => void;
     placeholder?: string;
     styles?: string;
     autoFocus?: boolean;
     autoComplete?: string;
     isError?: boolean;
     errorText?: string;
+    disabled?: boolean;
     togglePasswordVisibility?: boolean;
     showPassword?: boolean;
     onTogglePasswordVisibility?: () => void;
@@ -37,12 +39,13 @@ const TextField = ({
                 type={showPassword ? "text" : type}
                 name={name}
                 value={value}
+                disabled={disabled}
                 placeholder={placeholder}
                 autoFocus={autoFocus}
                 autoComplete={autoComplete}
                 className={`${styles}`}
                 onChange={onChange}
-                onBlur={onBlur}
+                onFocus={onFocus}
             />
             {togglePasswordVisibility && (
                 <span
