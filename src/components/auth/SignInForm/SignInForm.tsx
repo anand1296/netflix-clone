@@ -6,6 +6,7 @@ import { useState } from "react";
 import { signInFirebaseApi } from "../../../utils/auth/firebase-auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../utils/store/user.slice";
+import { setToken } from "../../../utils/auth/storage";
 
 const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void }) => {
 
@@ -28,10 +29,11 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
         validationSchema: validateSignIn,
         onSubmit: (values, { resetForm }) => {
             console.log(values);
-            signInFirebaseApi(values.email, values.password).then((res) => {
+            signInFirebaseApi(values.email, values.password).then((res: any) => {
                 console.log(res);
                 setErrorText("");
-                dispatch(setUser({uid: res.uid, displayName: res.displayName, email: res.email}))
+                dispatch(setUser({uid: res.uid, displayName: res.displayName, email: res.email}));
+                setToken(res.accessToken);
                 navigate('/browse');
             }).catch((err) => {
                 console.log(err);

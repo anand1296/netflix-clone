@@ -5,28 +5,34 @@ import Browse from "../pages/Browse/Browse";
 import Login from "../pages/Login/Login";
 import { Provider } from "react-redux";
 import appStore from "../utils/store/app.store";
+import ProtectedRoute from "./protected-route";
 
 const appRoutes = createBrowserRouter([
     {
         element: (
             <Provider store={appStore}>
-                <Layout />
+                <Layout/>
             </Provider>
         ),
         errorElement: <PageNotFound />,
         children: [
             {
-                path: "/",
-                element: <Navigate replace to="/browse" />,
-            },
-            {
-                path: "/browse",
-                element: <Browse />,
-            },
-            {
                 path: "/login",
                 element: <Login />,
             },
+            {
+                element: <ProtectedRoute/>,
+                children: [
+                    {
+                        path: "/",
+                        element: <Navigate replace to="/browse" />,
+                    },
+                    {
+                        path: "/browse",
+                        element: <Browse />,
+                    },
+                ]
+            }
         ],
     },
 ]);
