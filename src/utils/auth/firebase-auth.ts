@@ -16,7 +16,7 @@ export async function signUpFirebaseApi(email: string, password: string) {
 export async function signInFirebaseApi(email: string, password: string) { 
     return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-        console.log(userCredential);
+        // console.log(userCredential);
         return userCredential.user as any;
     })
     .catch((error) => {

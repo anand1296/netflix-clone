@@ -3,9 +3,11 @@ import Layout from "../components/global/Layout/Layout";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import Browse from "../pages/Browse/Browse";
 import Login from "../pages/Login/Login";
-import { Provider } from "react-redux";
-import appStore from "../utils/store/app.store";
+import { Provider, useSelector } from "react-redux";
+import appStore, { RootState } from "../utils/store/app.store";
 import ProtectedRoute from "./protected-route";
+import { isAuthenticated } from "../utils/auth/storage";
+ 
 
 const appRoutes = createBrowserRouter([
     {
@@ -18,7 +20,7 @@ const appRoutes = createBrowserRouter([
         children: [
             {
                 path: "/login",
-                element: <Login />,
+                element: <Login/>,
             },
             {
                 element: <ProtectedRoute/>,

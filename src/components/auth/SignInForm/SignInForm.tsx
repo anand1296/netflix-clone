@@ -7,6 +7,7 @@ import { signInFirebaseApi } from "../../../utils/auth/firebase-auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../utils/store/user.slice";
 import { setToken } from "../../../utils/auth/storage";
+import { APP_CONSTANTS, replacePlaceholders } from "../../../utils/constants";
 
 const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void }) => {
 
@@ -16,9 +17,9 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
     const [errorText, setErrorText] = useState("");
 
     const validateSignIn = Yup.object().shape({
-        email: Yup.string().required("Email is required!").email("Invalid email address!"),
+        email: Yup.string().required(replacePlaceholders(APP_CONSTANTS.AUTH.ERRORS.REQUIRED, {field: "Email"})).email(APP_CONSTANTS.AUTH.ERRORS.INVALID_EMAIL),
         password: Yup.string()
-            .required("Password is required")
+            .required(replacePlaceholders(APP_CONSTANTS.AUTH.ERRORS.REQUIRED, {field: "Password"}))
     });
 
     const signInForm = useFormik({
@@ -30,11 +31,11 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
         onSubmit: (values, { resetForm }) => {
             console.log(values);
             signInFirebaseApi(values.email, values.password).then((res: any) => {
-                console.log(res);
+                // console.log(res);
                 setErrorText("");
                 dispatch(setUser({uid: res.uid, displayName: res.displayName, email: res.email}));
                 setToken(res.accessToken);
-                navigate('/browse');
+                navigate(`/${APP_CONSTANTS.ROUTES.BROWSE}`);
             }).catch((err) => {
                 console.log(err);
                 setErrorText(err.toString().split(':')[2]);
@@ -43,8 +44,8 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
         },
         validateOnMount: true,
         validate: (values) => {
-            console.log(values);
-            console.log(signInForm, signInForm.dirty, signInForm.touched, signInForm.errors);
+            // console.log(values);
+            // console.log(signInForm, signInForm.dirty, signInForm.touched, signInForm.errors);
         }
     });
 
@@ -81,14 +82,14 @@ const SignInForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                 type="submit"
                 className={`p-2 w-full text-center bg-red-600 roun font-medium rounded transition-all ${signInForm.isValid ? 'hover:bg-red-700': '' }  disabled:opacity-70 disabled:cursor-default`}
             >
-                Sign In
+                {APP_CONSTANTS.AUTH.BUTTONS.SIGN_IN}
             </button>
             { Boolean(errorText.length) && <div className="text-red-500 text-sm text-start before:content-['⚠'] before:pr-1">
                     {errorText}
                 </div> }
             <p className="my-4 text-[rgba(255,255,255,0.7)]" onClick={(e) => {e.preventDefault();toggleFormType("signup")}}>
-                New to Netflix?{" "}
-                <span className="text-white font-semibold cursor-pointer hover:underline">Sign up now</span>.
+                {APP_CONSTANTS.AUTH.TEXT.NEW_TO_NETFLIX}{" "}
+                <span className="text-white font-semibold cursor-pointer hover:underline">{APP_CONSTANTS.AUTH.TEXT.SIGN_UP_NOW}</span>.
             </p>
         </form>
     );

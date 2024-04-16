@@ -12,6 +12,10 @@ export const getUserFromToken = () => {
     else return null;
 }
 
+const getToken = () => {
+    return sessionStorage.getItem('auth-token');
+}
+
 export const setToken = (token: string) => {
     sessionStorage.setItem('auth-token', token);
 }
@@ -19,3 +23,9 @@ export const setToken = (token: string) => {
 export const removeToken = () => {
     sessionStorage.removeItem('auth-token');
 }
+
+export const isAuthenticated = () => {
+    const token = getToken();
+    console.log(token !== null);
+    return token !== null;
+};

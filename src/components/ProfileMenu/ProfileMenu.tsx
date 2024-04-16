@@ -1,8 +1,8 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../../utils/store/user.slice";
 import ProfileMenuOptions from "./ProfileMenuOptions"
 import { removeToken } from "../../utils/auth/storage";
+import { APP_CONSTANTS } from "../../utils/constants";
 
 const ProfileMenu = () => {
 
@@ -10,7 +10,7 @@ const ProfileMenu = () => {
 
     const signOut = () => {
         removeToken();
-        dispatch(clearUser())
+        dispatch(clearUser());
     }
     
     return (
@@ -27,7 +27,7 @@ const ProfileMenu = () => {
             </ul>
             <ul>
                 <li className="py-3 px-2 w-full border-t flex items-center justify-center cursor-pointer" onClick={signOut}>
-                    <span className=" hover:underline">Sign Out</span>
+                    <span className=" hover:underline">{APP_CONSTANTS.AUTH.BUTTONS.SIGN_OUT}</span>
                 </li>
             </ul>
         </div>

@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import TextField from "../../common/TextField";
 import { useState } from "react";
 import { signUpFirebaseApi, updateUserFirebaseApi } from "../../../utils/auth/firebase-auth";
+import { APP_CONSTANTS, replacePlaceholders } from "../../../utils/constants";
 
 interface Values {
     name: string;
@@ -17,22 +18,22 @@ const SignUpForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
     const [errorText, setErrorText] = useState("");
 
     const validateSignUp = Yup.object().shape({
-        name: Yup.string().required("Name is required!"),
-        email: Yup.string().required("Email is required!").email("Invalid email address!"),
+        name: Yup.string().required(replacePlaceholders(APP_CONSTANTS.AUTH.ERRORS.REQUIRED, {field: "Name"})),
+        email: Yup.string().required(replacePlaceholders(APP_CONSTANTS.AUTH.ERRORS.REQUIRED, {field: "Email"})).email(APP_CONSTANTS.AUTH.ERRORS.INVALID_EMAIL),
         password: Yup.string()
-            .required("Password is required")
-            .min(8, "Pasword must be 8 or more characters")
+            .required(replacePlaceholders(APP_CONSTANTS.AUTH.ERRORS.REQUIRED, {field: "Password"}))
+            .min(8, replacePlaceholders(APP_CONSTANTS.AUTH.ERRORS.MIN_LENGTH, {field: "Password", min: '8'}))
             .matches(
                 /(?=.*[a-z])(?=.*[A-Z])\w+/,
-                "Password ahould contain at least one uppercase and lowercase character"
+                APP_CONSTANTS.AUTH.ERRORS.PASSWORD.DUAL_CASING
             )
-            .matches(/\d/, "Password should contain at least one number")
-            .matches(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/, "Password should contain at least one special character"),
+            .matches(/\d/, APP_CONSTANTS.AUTH.ERRORS.PASSWORD.ONE_NUMBER)
+            .matches(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/, APP_CONSTANTS.AUTH.ERRORS.PASSWORD.SPECIAL_CHAR),
         confirmPassword: Yup.string().when("password", (password: any, field: any) => {
             if (password) {
                 return field
-                    .required("The passwords do not match")
-                    .oneOf([Yup.ref("password")], "The passwords do not match");
+                    .required(APP_CONSTANTS.AUTH.ERRORS.PASSWORD.MISMATCH)
+                    .oneOf([Yup.ref("password")], APP_CONSTANTS.AUTH.ERRORS.PASSWORD.MISMATCH);
             }
         }),
     });
@@ -141,13 +142,13 @@ const SignUpForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                     signUpForm.isValid ? "hover:bg-red-700" : ""
                 }  disabled:opacity-70 disabled:cursor-default`}
             >
-                Sign Up
+                {APP_CONSTANTS.AUTH.BUTTONS.SIGN_UP}
             </button>
             <button
                 type="reset"
                 className={`p-2 w-full text-center text-gray-500 border border-gray-500 font-medium rounded transition-all duration-300 ease-in-out hover:bg-white hover:text-gray-500 hover:border-white cursor-pointer`}
             >
-                Reset
+                {APP_CONSTANTS.GLOBAL.BUTTONS.RESET}
             </button>
             {Boolean(errorText.length) && (
                 <div className="text-red-500 text-sm text-end before:content-['⚠'] before:pr-1">{errorText}</div>
@@ -159,8 +160,8 @@ const SignUpForm = ({ toggleFormType }: { toggleFormType: (type: string) => void
                     toggleFormType("signin");
                 }}
             >
-                Already Registered?{" "}
-                <span className="text-white font-semibold cursor-pointer hover:underline">Sign in now</span>.
+                {APP_CONSTANTS.AUTH.TEXT.ALREADY_REGISTERED}{" "}
+                <span className="text-white font-semibold cursor-pointer hover:underline">{APP_CONSTANTS.AUTH.TEXT.SIGN_IN_NOW}</span>.
             </p>
         </form>
     );

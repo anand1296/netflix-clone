@@ -1,18 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProfileMenu from "../../ProfileMenu/ProfileMenu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../utils/store/app.store";
+import { APP_CONSTANTS } from "../../../utils/constants";
+import { setUser } from "../../../utils/store/user.slice";
+import { getUserFromToken } from "../../../utils/auth/storage";
 
 const Header = () => {
+    console.log('header rendered');
     const userLoggedIn = Boolean(useSelector((state: RootState) => state.user));
+    const dispatch = useDispatch();
+    if(!userLoggedIn) {
+        const user = getUserFromToken();
+        if(user) {
+            dispatch(setUser(user));
+        }
+    }
     const activeMenu: string = "Home";
-    console.log(userLoggedIn);
+    // console.log(userLoggedIn);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [delayHandler, setDelayHandler] = useState<any>(null);
     const [expandedSearch, setExpandedSearch] = useState(false);
     const searchRef = useRef<HTMLInputElement>(null);
-    console.log(showProfileMenu);
+    // console.log(showProfileMenu);
 
     const handleMouseEnter = () => {
         clearTimeout(delayHandler);
@@ -43,7 +54,6 @@ const Header = () => {
     }
 
     useEffect(() => {
-        console.log('useEffect', showProfileMenu);
         setShowProfileMenu(false);
     }, [userLoggedIn]);
 
@@ -131,7 +141,7 @@ const Header = () => {
                                 <span className="" role="presentation">
                                     <img
                                         className="profile-icon"
-                                        src="https://occ-0-4994-2186.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTvTV1d97HoOuutIG9GUEJgNIhg89JU3EQmtIikzdqolTLHSDqxwytfl61TC-HlrVt7QrzxdB5xR3nD2CPKNL9TF3qKTmcI.png?r=cad"
+                                        src={APP_CONSTANTS.GLOBAL.ICONS.PROFILE}
                                         alt="Profile"
                                     />
                                 </span>

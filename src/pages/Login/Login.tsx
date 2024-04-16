@@ -1,6 +1,7 @@
 import {useState} from "react"
 import SignUpForm from "../../components/auth/SignUpForm/SignUpForm";
 import SignInForm from "../../components/auth/SignInForm/SignInForm";
+import { APP_CONSTANTS } from "../../utils/constants";
 
 const Login = () => {
 
@@ -12,7 +13,7 @@ const Login = () => {
         <div className="block w-full h-full min-h-screen overflow-hidden absolute bg-cover z-[-1] opacity-50 pointer-events-none">
           <img
             className=" min-h-full min-w-full"
-            src="https://assets.nflxext.com/ffe/siteui/vlv3/7ca5b7c7-20aa-42a8-a278-f801b0d65fa1/fb548c0a-8582-43c5-9fba-cd98bf27452f/IN-en-20240326-popsignuptwoweeks-perspective_alpha_website_small.jpg"
+            src={APP_CONSTANTS.GLOBAL.IMAGES.PRE_AUTH_BG}
             alt="bg"
           />
         </div>
@@ -20,7 +21,7 @@ const Login = () => {
 
       <div className="login-form-container text-white relative z-[1] py-12 px-16 bg-[#030603]/80 rounded max-w-md mx-auto mb-4">
         <header>
-          <h1 className="mb-7">{ isSignUp ? 'Sign Up' : 'Sign In'}</h1>
+          <h1 className="mb-7">{ isSignUp ? APP_CONSTANTS.AUTH.HEADERS.SIGN_UP : APP_CONSTANTS.AUTH.HEADERS.SIGN_IN}</h1>
         </header>
         {
           isSignUp ? <SignUpForm toggleFormType={(type) => setIsSignUp(type === 'signup')} /> : <SignInForm toggleFormType={(type) => setIsSignUp(type === 'signup')}/>
