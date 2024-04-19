@@ -49,6 +49,24 @@ export const APP_CONSTANTS = {
         SIGN_IN: 'login',
         BROWSE: 'browse',
         PROFILE: 'profile'
+    },
+    API: {
+        TMDB: {
+            BASE_URL: `${process.env.REACT_APP_TMDB_API_URL}`,
+            VERSION: `${process.env.REACT_APP_TMDB_API_VERSION}`,
+            OPTIONS: {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                    Authorization: `Bearer ${process.env.REACT_APP_TMDB_AUTH_TOKEN}`
+                }
+            }
+        },
+        OMDB: {
+            BASE_URL: `${process.env.REACT_APP_OMDB_API_URL}`,
+            VERSION: `${process.env.REACT_APP_OMDB_API_VERSION}`,
+            IMG_URL: `${process.env.REACT_APP_OMDB_IMG_URL}`,
+        }
     }
 }
 
