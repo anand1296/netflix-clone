@@ -1,15 +1,17 @@
-import { RequestOptions } from "https";
-import { useEffect, useState } from "react";
-import { URL } from "url";
+import { RequestOptions } from 'https';
+import { useEffect, useState } from 'react';
+import { URL } from 'url';
 
 type FetchState<T> = {
     data: T | null;
     loading: boolean;
     error: Error | null;
-}
+};
 
-export default function useFetch<T>(url: string, options: RequestInit = {}): FetchState<T> {
-
+export default function useFetch<T>(
+    url: string,
+    options: RequestInit = {}
+): FetchState<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
@@ -21,27 +23,25 @@ export default function useFetch<T>(url: string, options: RequestInit = {}): Fet
         const fetchData = async () => {
             setLoading(true);
             try {
-                const resp = await fetch(url, {...options, signal});
-                if(!resp.ok) {
-                    throw new Error("Failed to fetch data");
+                const resp = await fetch(url, { ...options, signal });
+                if (!resp.ok) {
+                    throw new Error('Failed to fetch data');
                 }
                 const data = await resp.json();
                 setData(data);
-            }
-            catch(error: any) {
+            } catch (error: any) {
                 setError(error);
-            }
-            finally {
+            } finally {
                 setLoading(false);
             }
-        }
+        };
 
         fetchData();
 
         return () => {
             controller.abort();
-        }
-    }, [url, options])
+        };
+    }, [url, options]);
 
-    return { data, loading, error }
+    return { data, loading, error };
 }

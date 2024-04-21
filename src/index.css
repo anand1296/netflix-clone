@@ -8,25 +8,32 @@ body {
     background: #f3f3f3;
     color: #333;
     direction: ltr;
-    font-family: Netflix Sans, Helvetica Neue, Segoe UI, Roboto, Ubuntu, sans-serif;
+    font-family:
+        Netflix Sans,
+        Helvetica Neue,
+        Segoe UI,
+        Roboto,
+        Ubuntu,
+        sans-serif;
     font-size: 16px;
     display: block;
     height: 100%;
     margin: 0;
 }
 
-input:focus, input:focus-visible {
+input:focus,
+input:focus-visible {
     outline: none;
 }
 
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
 }
 
 @layer base {
     h1 {
-      @apply text-3xl font-bold;
+        @apply text-3xl font-bold;
     }
     h2 {
         @apply text-2xl font-semibold;
@@ -34,4 +41,4 @@ input:focus, input:focus-visible {
     h3 {
         @apply text-xl font-medium;
     }
-}  
+}

@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from 'react';
 
 const TextField = ({
     type,
@@ -36,7 +36,7 @@ const TextField = ({
     return (
         <div className="flex flex-col w-full text-start relative pb-4">
             <input
-                type={showPassword ? "text" : type}
+                type={showPassword ? 'text' : type}
                 name={name}
                 value={value}
                 disabled={disabled}
@@ -51,8 +51,11 @@ const TextField = ({
                 <span
                     className="text-xl absolute right-0 px-2 flex h-full items-center bottom-2 cursor-pointer transition-all duration-200 ease-in-out hover:text-blue-400"
                     onClick={onTogglePasswordVisibility}
-                >👁
-                    {showPassword && <span className="absolute pr-[5px] right-2">/</span>}
+                >
+                    👁
+                    {showPassword && (
+                        <span className="absolute pr-[5px] right-2">/</span>
+                    )}
                 </span>
             )}
             {isError && (
