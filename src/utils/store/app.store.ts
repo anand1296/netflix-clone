@@ -1,12 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './user.slice';
-import moviesReducer from './movies.slice';
+import reducers from './root-reducer';
 
 const appStore = configureStore({
-    reducer: {
-        user: userReducer,
-        movies: moviesReducer,
-    },
+    reducer: reducers,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({}),
 });
 
 export default appStore;

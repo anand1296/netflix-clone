@@ -1,8 +1,9 @@
 import React from 'react';
 import Button from '../common/Button';
 import { faPlay, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { ContentDetails } from '../../types/content.type';
 
-const VideoInfo = ({ data }: any) => {
+const VideoInfo = ({ data }: { data: ContentDetails }) => {
     const { title, overview } = data;
     return (
         <div className=" absolute top-0 bottom-0 left-0 right-0 h-full w-full">
@@ -14,17 +15,15 @@ const VideoInfo = ({ data }: any) => {
                 <div className="flex gap-2">
                     <Button
                         onClick={() => {}}
+                        variant="BG_WHITE"
                         leftIcon={faPlay}
-                        hover={{ bgColor: '[rgba(255,_255,_255,_0.75)]' }}
                     >
                         Play
                     </Button>
                     <Button
                         onClick={() => {}}
                         leftIcon={faInfoCircle}
-                        color="white"
-                        bgColor={'[rgba(109,_109,_110,_0.7)]'}
-                        hover={{ bgColor: '[rgba(109,_109,_110,_0.4)]' }}
+                        variant="BG_GRAY"
                     >
                         More Info
                     </Button>

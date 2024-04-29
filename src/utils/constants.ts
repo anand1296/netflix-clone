@@ -57,6 +57,7 @@ export const APP_CONSTANTS = {
         TMDB: {
             //doesn't work in Indai without VPN
             BASE_URL: `${process.env.REACT_APP_TMDB_API_URL}`,
+            IMG_URL: `${process.env.REACT_APP_TMDB_IMG_URL}`,
             VERSION: `${process.env.REACT_APP_TMDB_API_VERSION}`,
             OPTIONS: {
                 method: 'GET',

@@ -20,7 +20,7 @@ export default function useFetch<T>(
         const controller = new AbortController();
         const signal = controller.signal;
 
-        const fetchData = async () => {
+        (async () => {
             setLoading(true);
             try {
                 const resp = await fetch(url, { ...options, signal });
@@ -34,9 +34,7 @@ export default function useFetch<T>(
             } finally {
                 setLoading(false);
             }
-        };
-
-        fetchData();
+        })();
 
         return () => {
             controller.abort();
