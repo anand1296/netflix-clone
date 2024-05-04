@@ -33,7 +33,7 @@ export const ContentPromo = ({ data }: { data: ContentDetails }) => {
 
     console.log(ytVideoId);
 
-    const { poster_path } = data;
+    const { backdrop_path } = data;
 
     return (
         <div className="relative top-0 left-0 right-0 mb-[20px] pb-[40%] mt-[-70px]">
@@ -51,11 +51,12 @@ export const ContentPromo = ({ data }: { data: ContentDetails }) => {
                     ? !!ytVideoId?.length && (
                           <VideoBackground ytVideoId={ytVideoId} />
                       )
-                    : !!poster_path?.length && (
-                          <PosterBackground posterPath={poster_path} />
+                    : !!backdrop_path?.length && (
+                          <PosterBackground backdrop_path={backdrop_path} />
                       )}
                 {data && <VideoInfo data={data} />}
             </div>
+            <div className="fixed bg-[linear-gradient(0deg,black,white)] left-[0] top-[0] right-0 bottom-0"></div>
         </div>
     );
 };

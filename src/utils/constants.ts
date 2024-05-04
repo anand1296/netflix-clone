@@ -66,6 +66,15 @@ export const APP_CONSTANTS = {
                     Authorization: `Bearer ${process.env.REACT_APP_TMDB_AUTH_TOKEN}`,
                 },
             },
+            CONTENT_TYPE: {
+                MOVIE: 'movie',
+                TV_SERIES: 'tv_series',
+            },
+            ENDPOINTS: {
+                POPULAR: 'popular',
+                TOP_RATED: 'top_rated',
+                UPCOMING: 'upcoming',
+            },
         },
         OMDB: {
             BASE_URL: `${process.env.REACT_APP_OMDB_API_URL}`,

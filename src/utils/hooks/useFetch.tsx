@@ -9,7 +9,7 @@ type FetchState<T> = {
 };
 
 export default function useFetch<T>(
-    url: string,
+    url: string | URL,
     options: RequestInit = {}
 ): FetchState<T> {
     const [data, setData] = useState<T | null>(null);

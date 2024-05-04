@@ -1,14 +1,13 @@
 import React from 'react';
+import { ContentDetails } from '../../types/content.type';
+import { APP_CONSTANTS } from '../../utils/constants';
 
-const ContentCard = ({ data }: { data: any }) => {
-    const testImg =
-        'https://occ-0-769-768.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdoixr-eaoZTXLn5vpA4RjfbYegdYuswMx5k4DROX0cnaiRKoMFw1g00H34M8tFmq7yoK4oBzQPvYRXh8MFHFL3Xchbsja3UMSPS3Sp7EuS5G49tA8OIBO4gFM6JVEkFBjqd2ie0wBRQngnsXuROD1C0klJWB7yHRTZCBDjQTBejrS0jLeXK-3kDgKm0WhS3RegWxz3F6O0utxyGkL7tCILtMV1RSAIYP7OdHHnSIrq7Mbze2tyUhyF02sVDZdXb6iMWXCsJtyXDUHUKg5YEisc.webp?r=5ed';
-
+const ContentCard = ({ data }: { data: ContentDetails }) => {
     return (
-        <div className="relative w-[20%] z-10 cursor-pointer shrink-0 rounded-sm">
+        <div className="relative w-[20%] z-10 cursor-pointer shrink-0 rounded-sm transition-border duration-150 hover:border-2 hover:border-white">
             <img
-                className="w-full object-cover rounded-sm"
-                src={testImg}
+                className="w-full object-cover aspect-video rounded-sm"
+                src={`${APP_CONSTANTS.API.TMDB.IMG_URL}/${data.poster_path}`}
                 alt=""
             />
         </div>

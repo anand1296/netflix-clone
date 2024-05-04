@@ -9,8 +9,8 @@ import CardList from '../../components/Content/CardList';
 import useFetchAll from '../../utils/hooks/useFetchAll';
 
 const Browse = () => {
-    const dispatch = useDispatch();
-
+    // const dispatch = useDispatch();
+    console.log('re-rendering Browse');
     const {
         data: nowPlayingDetails,
         loading,
@@ -21,9 +21,41 @@ const Browse = () => {
     );
     console.log(nowPlayingDetails, loading, error);
 
-    const contentList: Record<string, any[]> | null = useFetchAll([
-        { name: 'a', url: new URL('a') },
-    ]);
+    // const contentList: Record<string, any[]> | null = useFetchAll([
+    //     {
+    //         name: 'popular_movies',
+    //         url: new URL(
+    //             `${APP_CONSTANTS.API.TMDB.BASE_URL}/${APP_CONSTANTS.API.TMDB.VERSION}/${APP_CONSTANTS.API.TMDB.CONTENT_TYPE.MOVIE}/${APP_CONSTANTS.API.TMDB.ENDPOINTS.POPULAR}`
+    //         ),
+    //     },
+    //     {
+    //         name: 'upcoming_movies',
+    //         url: new URL(
+    //             `${APP_CONSTANTS.API.TMDB.BASE_URL}/${APP_CONSTANTS.API.TMDB.VERSION}/${APP_CONSTANTS.API.TMDB.CONTENT_TYPE.MOVIE}/${APP_CONSTANTS.API.TMDB.ENDPOINTS.UPCOMING}`
+    //         ),
+    //     },
+    // ]);
+
+    const { data: popularMovies } = useFetch<ContentList>(
+        `${APP_CONSTANTS.API.TMDB.BASE_URL}/${APP_CONSTANTS.API.TMDB.VERSION}/${APP_CONSTANTS.API.TMDB.CONTENT_TYPE.MOVIE}/${APP_CONSTANTS.API.TMDB.ENDPOINTS.POPULAR}`,
+        APP_CONSTANTS.API.TMDB.OPTIONS
+    );
+
+    console.log('popular-movies', popularMovies);
+
+    const { data: upcomingMovies } = useFetch<ContentList>(
+        `${APP_CONSTANTS.API.TMDB.BASE_URL}/${APP_CONSTANTS.API.TMDB.VERSION}/${APP_CONSTANTS.API.TMDB.CONTENT_TYPE.MOVIE}/${APP_CONSTANTS.API.TMDB.ENDPOINTS.UPCOMING}`,
+        APP_CONSTANTS.API.TMDB.OPTIONS
+    );
+
+    console.log('upcoming-movies', upcomingMovies);
+
+    const { data: topRatedMovies } = useFetch<ContentList>(
+        `${APP_CONSTANTS.API.TMDB.BASE_URL}/${APP_CONSTANTS.API.TMDB.VERSION}/${APP_CONSTANTS.API.TMDB.CONTENT_TYPE.MOVIE}/${APP_CONSTANTS.API.TMDB.ENDPOINTS.TOP_RATED}`,
+        APP_CONSTANTS.API.TMDB.OPTIONS
+    );
+
+    console.log('topRated-movies', topRatedMovies);
 
     // const data = useMock('now_playing');
     // console.log(data);
@@ -34,8 +66,23 @@ const Browse = () => {
                 <ContentPromo data={nowPlayingDetails.results[0]} />
             )}
             {/* Card rows x n */}
-            {contentList && !!Object.values(contentList)?.length && (
-                <CardList />
+            {!!popularMovies?.results.length && (
+                <CardList
+                    title="Popular Movies"
+                    contentList={popularMovies.results}
+                />
+            )}
+            {!!upcomingMovies?.results.length && (
+                <CardList
+                    title="Upcoming Movies"
+                    contentList={upcomingMovies.results}
+                />
+            )}
+            {!!topRatedMovies?.results.length && (
+                <CardList
+                    title="Top Rated Movies"
+                    contentList={topRatedMovies.results}
+                />
             )}
         </>
     );

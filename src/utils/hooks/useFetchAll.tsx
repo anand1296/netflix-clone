@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { APP_CONSTANTS } from '../constants';
 
 type endPoint = {
     name: string;
@@ -12,10 +13,18 @@ const useFetchAll = (endpoints: Array<endPoint>) => {
     > | null>(null);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         (async () => {
             try {
                 const responses = await Promise.all(
-                    endpoints.map((endpoint) => fetch(endpoint.url))
+                    endpoints.map((endpoint) =>
+                        fetch(endpoint.url, {
+                            ...APP_CONSTANTS.API.TMDB.OPTIONS,
+                            signal,
+                        })
+                    )
                 );
                 const data = await Promise.all(
                     responses.map((response) => response.json())
@@ -31,6 +40,10 @@ const useFetchAll = (endpoints: Array<endPoint>) => {
                 console.log('Error fetching data', err);
             }
         })();
+
+        return () => {
+            controller.abort();
+        };
     }, [endpoints]);
 
     return combinedResult;
